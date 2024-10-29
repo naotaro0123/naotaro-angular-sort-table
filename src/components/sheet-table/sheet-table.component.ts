@@ -33,6 +33,7 @@ export class SheetTableComponent implements OnInit, OnDestroy {
       allowInsertColumn: false,
       allowInsertRow: false,
       allowManualInsertColumn: false,
+      // columnDrag: true,
       columns: [
         { title: '名前', width: 140 },
         { title: 'タイトル', width: 140 },
@@ -47,7 +48,16 @@ export class SheetTableComponent implements OnInit, OnDestroy {
     const tdList = this.#jspreadsheet.table.tHead?.querySelectorAll('td');
     if (tdList === undefined) return;
     for (let i = 0; i < tdList.length; i++) {
-      tdList[i].setAttribute('data-id', this.columns[i]);
+      const target = tdList[i + 1];
+      if (tdList[i + 1] === undefined) continue;
+
+      target.setAttribute('data-id', this.columns[i]);
+      target.draggable = true;
+      if (this.columns[i] === 'name') {
+        target.addEventListener('drag', (e) => {
+          console.log('drag:', e);
+        });
+      }
     }
 
     // body
