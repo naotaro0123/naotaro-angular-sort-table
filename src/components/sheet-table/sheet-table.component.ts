@@ -41,13 +41,35 @@ export class SheetTableComponent implements OnInit, OnDestroy {
       data: this.users.map((user) => [user.name!, user.title!, user.mask!]),
     });
 
-    // this.#jspreadsheet.table.className = 'sort-table';
+    this.#jspreadsheet.table.id = 'sort-table';
+
+    // header
+    const tdList = this.#jspreadsheet.table.tHead?.querySelectorAll('td');
+    if (tdList === undefined) return;
+    for (let i = 0; i < tdList.length; i++) {
+      tdList[i].setAttribute('data-id', this.columns[i]);
+    }
+
+    // body
+    const trList = this.#jspreadsheet.table.tBodies[0].querySelectorAll('tr');
+    for (let i = 0; i < trList.length; i++) {
+      const _tdList = trList[i].querySelectorAll('td');
+      for (let j = 0; j < _tdList.length; j++) {
+        _tdList[j].setAttribute('data-id', this.columns[j]);
+      }
+    }
+
+    // console.log('#', document.querySelector('#sort-table > thead > tr'));
 
     this.#sortableInstance = new Sortable(
-      document.querySelector('table > thead > tr')!,
+      document.querySelector('#sort-table > thead > tr')!,
       {
-        draggable: 'th',
-        direction: 'horizontal',
+        draggable: 'td',
+        // direction: 'horizontal',
+        dragClass: 'sortable-drag',
+        onStart: (e) => {
+          console.log('onStart:', e);
+        },
         onEnd: (e) => {
           console.log('onEnd:', e);
           const items = e.target.querySelectorAll('th');
