@@ -1,0 +1,18 @@
+<table class="sort-table">
+  <thead>
+    <tr>
+      @for (column of columns; track column) {
+      <th [attr.data-id]="column">{{ column }}</th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @for (user of users; track user.id) {
+    <tr>
+      @for (column of columns; track column) {
+      <td>{{ user[column] }}</td>
+      }
+    </tr>
+    }
+  </tbody>
+</table>
