@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import jspreadsheet from 'jspreadsheet-ce';
 import Sortable from 'sortablejs';
-import { columns, User, users } from '../../data/sample-data';
+import { User, users } from '../../data/sample-data';
 
 @Component({
   selector: 'sheet-table',
@@ -16,7 +16,6 @@ import { columns, User, users } from '../../data/sample-data';
   styleUrl: './sheet-table.component.scss',
 })
 export class SheetTableComponent implements AfterViewInit, OnDestroy {
-  columns: string[] = [...columns];
   users: User[] = [...users];
   #jspreadsheet: ReturnType<typeof jspreadsheet> | undefined;
   #sortableInstance: Sortable | undefined;
@@ -36,8 +35,6 @@ export class SheetTableComponent implements AfterViewInit, OnDestroy {
       data: this.users.map((user) => [user.name!, user.title!, user.mask!]),
     });
 
-    this.#jspreadsheet.table.id = 'sort-table';
-
     // header
     const tdList = this.#jspreadsheet.table.tHead?.querySelectorAll('td');
     if (tdList === undefined) return;
@@ -45,7 +42,6 @@ export class SheetTableComponent implements AfterViewInit, OnDestroy {
       if (tdList[i].classList.contains('jexcel_selectall')) {
         continue;
       }
-      tdList[i].setAttribute('data-id', this.columns[i - 1]);
       tdList[i].classList.add('sortable-td');
 
       const span1 = document.createElement('span');
@@ -57,38 +53,17 @@ export class SheetTableComponent implements AfterViewInit, OnDestroy {
       tdList[i].prepend(span1);
     }
 
-    // body
-    const trList = this.#jspreadsheet.table.tBodies[0].querySelectorAll('tr');
-    for (let i = 0; i < trList.length; i++) {
-      const _tdList = trList[i].querySelectorAll('td');
-      for (let j = 0; j < _tdList.length; j++) {
-        _tdList[j].setAttribute('data-id', this.columns[j]);
-      }
-    }
-
     this.#sortableInstance = new Sortable(
-      document.querySelector('#sort-table > thead > tr')!,
+      this.#jspreadsheet.table.tHead?.querySelector('tr')!,
       {
         draggable: 'td',
-        // direction: 'horizontal',
-        onStart: (e) => {
-          console.log('onStart:', e);
-        },
-        // onUpdate: (e) => console.log('update', e),
-        // onChoose: (e) => console.log('choose', e),
-        // onChange: (e) => console.log('change', e),
-        // onMove: (e) => console.log('move', e),
         onEnd: (e) => {
           console.log('onEnd:', e);
-          const items = e.target.querySelectorAll('td');
-
-          const newColumns: string[] = [];
-          for (let i = 0; i < items.length; i++) {
-            const value = items[i].getAttribute('data-id');
-            if (value === null) continue;
-            newColumns.push(value);
-          }
-          this.columns = newColumns;
+          const { oldIndex, newIndex } = e;
+          this.#jspreadsheet?.moveColumn(
+            (oldIndex ?? 0) - 1,
+            (newIndex ?? 0) - 1
+          );
         },
       }
     );

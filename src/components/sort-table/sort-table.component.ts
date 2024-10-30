@@ -19,11 +19,6 @@ export class SortTableComponent implements AfterViewInit, OnDestroy {
       {
         draggable: 'td',
         direction: 'horizontal',
-        // onUpdate: (e) => console.log('update', e),
-        // onChoose: (e) => console.log('choose', e),
-        // onChange: (e) => console.log('change', e),
-        // onStart: (e) => console.log('start', e),
-        // onMove: (e) => console.log('move', e),
         onEnd: (e) => {
           const items = e.target.querySelectorAll('td');
 
