@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import Sortable from 'sortablejs';
 import { columns, User, users } from '../../data/sample-data';
 
@@ -8,20 +8,12 @@ import { columns, User, users } from '../../data/sample-data';
   templateUrl: './sort-table.component.html',
   styleUrl: './sort-table.component.scss',
 })
-export class SortTableComponent implements OnInit, OnDestroy {
+export class SortTableComponent implements AfterViewInit, OnDestroy {
   columns: string[] = [...columns];
   users: User[] = [...users];
   #sortableInstance: Sortable | undefined;
 
-  ngOnInit(): void {
-    const target = document.querySelector(
-      '.sort-table > thead > tr > td:first-child'
-    )!;
-    // target.addEventListener('drag', () => {
-    //   console.log('dragstart:', this.columns[0]);
-    // });
-    // これがあるとSortable が効かない
-
+  ngAfterViewInit(): void {
     this.#sortableInstance = new Sortable(
       document.querySelector('.sort-table > thead > tr')!,
       {
