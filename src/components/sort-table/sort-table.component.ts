@@ -17,11 +17,10 @@ export class SortTableComponent implements OnInit, OnDestroy {
     const target = document.querySelector(
       '.sort-table > thead > tr > td:first-child'
     )!;
-    console.log('target', target);
-    // このイベントを入れたらDragできなくなった
-    // target.addEventListener('dragstart', () => {
+    // target.addEventListener('drag', () => {
     //   console.log('dragstart:', this.columns[0]);
     // });
+    // これがあるとSortable が効かない
 
     this.#sortableInstance = new Sortable(
       document.querySelector('.sort-table > thead > tr')!,

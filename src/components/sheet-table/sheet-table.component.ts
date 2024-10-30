@@ -26,13 +26,6 @@ export class SheetTableComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const spreadsheetContainer = this.spreadsheetContainer.nativeElement;
     this.#jspreadsheet = jspreadsheet(spreadsheetContainer, {
-      // about: false,
-      // allowDeleteColumn: false,
-      // allowDeleteRow: false,
-      // allowExport: false,
-      // allowInsertColumn: false,
-      // allowInsertRow: false,
-      // allowManualInsertColumn: false,
       // columnDrag: true,
       columns: [
         { title: '名前', width: 140 },
