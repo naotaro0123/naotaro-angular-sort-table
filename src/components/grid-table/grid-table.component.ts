@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import Sortable from 'sortablejs';
-import { columns, User, users } from '../../data/sample-data';
+import { User, users } from '../../data/sample-data';
 
 @Component({
   selector: 'grid-table',
@@ -9,16 +9,15 @@ import { columns, User, users } from '../../data/sample-data';
   styleUrl: './grid-table.component.scss',
 })
 export class GridTableComponent implements AfterViewInit, OnDestroy {
-  columns: string[] = [...columns];
   users: User[] = [...users];
   #sortableInstance: Sortable | undefined;
 
   ngAfterViewInit(): void {
     this.#sortableInstance = new Sortable(
-      document.querySelector('.grid-table')!,
+      // この下のdrag-rowは不要だった
+      document.querySelector('.grid-table > .drag-rows')!,
       {
-        draggable: '.drag-row',
-        direction: 'horizontal',
+        handle: '.handle',
         onEnd: (e) => {
           console.log(e);
         },
