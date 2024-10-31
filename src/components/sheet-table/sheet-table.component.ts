@@ -32,7 +32,7 @@ export class SheetTableComponent implements AfterViewInit, OnDestroy {
         { title: 'タイトル', width: 140 },
         { title: '説明', width: 160 },
       ],
-      data: this.users.map((user) => [user.name!, user.title!, user.mask!]),
+      // data: this.users.map((user) => [user.name!, user.title!, user.mask!]),
     });
 
     // header
@@ -43,6 +43,16 @@ export class SheetTableComponent implements AfterViewInit, OnDestroy {
         continue;
       }
       tdList[i].classList.add('sortable-td');
+      tdList[i].addEventListener('pointermove', (e) => {
+        if (tdList[i].style.cursor === 'col-resize') {
+          // ドラッグOKにしない
+          // tdList[i].style.pointerEvents = 'none';
+          tdList[i].draggable = false;
+          return;
+        }
+        tdList[i].draggable = true;
+        // tdList[i].style.pointerEvents = 'auto';
+      });
 
       const span1 = document.createElement('span');
       span1.textContent = '▲';
@@ -57,6 +67,9 @@ export class SheetTableComponent implements AfterViewInit, OnDestroy {
       this.#jspreadsheet.table.tHead?.querySelector('tr')!,
       {
         draggable: 'td',
+        onStart: (e) => {
+          console.log('onStart:', e);
+        },
         onEnd: (e) => {
           console.log('onEnd:', e);
           const { oldIndex, newIndex } = e;
@@ -67,6 +80,18 @@ export class SheetTableComponent implements AfterViewInit, OnDestroy {
         },
       }
     );
+  }
+
+  add1Data(): void {
+    this.#jspreadsheet?.setData(
+      this.users.map((user) => [user.name!, user.title!, user.mask!])
+    );
+  }
+
+  add2Data(): void {
+    setTimeout(() => {
+      this.add1Data();
+    }, 3000);
   }
 
   ngOnDestroy(): void {

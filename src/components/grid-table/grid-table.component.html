@@ -1,0 +1,11 @@
+<div class="grid-table">
+  @for (user of users; track user.name) {
+  <div class="drag-row">
+    <div class="name">{{ user.name }}</div>
+    <div class="title">{{ user.title }}</div>
+  </div>
+  <div class="mask">
+    {{ user.mask }}
+  </div>
+  }
+</div>
