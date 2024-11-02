@@ -1,4 +1,4 @@
-<div class="grid-table">
+<!-- <div class="grid-table">
   <div class="drag-rows">
     @for (user of users; track user.name) {
     <div class="drag-row">
@@ -16,4 +16,34 @@
     </div>
     }
   </div>
-</div>
+</div> -->
+
+<button
+  [matMenuTriggerFor]="menu"
+  (menuOpened)="menuOpened()"
+  (menuClosed)="menuClosed()"
+>
+  Menu
+</button>
+<mat-menu #menu="matMenu">
+  <div class="grid-table" (click)="$event.stopPropagation()">
+    <div class="drag-rows">
+      @for (user of users; track user.name) {
+      <div class="drag-row">
+        <input type="checkbox" />
+        <div class="handle">▲</div>
+        <div class="name">{{ user.name }}</div>
+        <div class="title">{{ user.title }}</div>
+      </div>
+      }
+    </div>
+
+    <div class="non-drag-rows">
+      @for (user of users; track user.name) {
+      <div class="mask">
+        {{ user.mask }}
+      </div>
+      }
+    </div>
+  </div>
+</mat-menu>
