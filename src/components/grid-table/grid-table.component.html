@@ -22,28 +22,32 @@
   [matMenuTriggerFor]="menu"
   (menuOpened)="menuOpened()"
   (menuClosed)="menuClosed()"
+  [matMenuTriggerRestoreFocus]="true"
 >
   Menu
 </button>
 <mat-menu #menu="matMenu">
-  <div class="grid-table" (click)="$event.stopPropagation()">
-    <div class="drag-rows">
-      @for (user of users; track user.name) {
-      <div class="drag-row">
-        <input type="checkbox" />
-        <div class="handle">▲</div>
-        <div class="name">{{ user.name }}</div>
-        <div class="title">{{ user.title }}</div>
+  <!-- これがないとsortablejsの影響でチェックボックスの挙動がおかしくなる -->
+  <ng-template matMenuContent>
+    <div class="grid-table" (click)="$event.stopPropagation()">
+      <div class="drag-rows">
+        @for (user of users; track user.name) {
+        <div class="drag-row">
+          <input type="checkbox" />
+          <div class="handle">▲</div>
+          <div class="name">{{ user.name }}</div>
+          <div class="title">{{ user.title }}</div>
+        </div>
+        }
       </div>
-      }
-    </div>
 
-    <div class="non-drag-rows">
-      @for (user of users; track user.name) {
-      <div class="mask">
-        {{ user.mask }}
+      <div class="non-drag-rows">
+        @for (user of users; track user.name) {
+        <div class="mask">
+          {{ user.mask }}
+        </div>
+        }
       </div>
-      }
     </div>
-  </div>
+  </ng-template>
 </mat-menu>

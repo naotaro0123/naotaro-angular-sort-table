@@ -40,6 +40,7 @@ export class GridTableComponent implements AfterViewInit, OnDestroy {
   }
 
   menuClosed(): void {
+    console.log('menu closed');
     this.#sortableInstance?.destroy();
   }
 
