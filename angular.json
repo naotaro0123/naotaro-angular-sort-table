@@ -32,6 +32,7 @@
             "allowedCommonJsDependencies": ["jspreadsheet-ce"],
             "styles": [
               "jspreadsheet-ce/dist/jspreadsheet.css",
+              "jsuites/dist/jsuites.css",
               "src/styles.scss"
             ],
             "scripts": ["src/assets/js/tiff.min.js"]
