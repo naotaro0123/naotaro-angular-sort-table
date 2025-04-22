@@ -8,3 +8,15 @@ table {
     border: 1px solid black;
   }
 }
+
+::ng-deep .jexcel_contextmenu {
+  & > div,
+  hr {
+    display: none;
+  }
+  // Copy、Pasteの行だけ表示
+  & > div:nth-child(6),
+  div:nth-child(7) {
+    display: flex;
+  }
+}

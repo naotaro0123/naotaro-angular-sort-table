@@ -8,6 +8,11 @@ import {
 import jspreadsheet from 'jspreadsheet-ce';
 import { User, users } from '../../data/sample-data';
 
+// jspreadsheet.setDictionary({
+//   Copy: 'コピー',
+//   Paste: 'ペースト',
+// });
+
 @Component({
   selector: 'sheet-context-menu',
   standalone: true,
@@ -22,6 +27,10 @@ export class SheetContextMenuComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     const spreadsheetContainer = this.spreadsheetContainer.nativeElement;
+    jspreadsheet.setDictionary({
+      Copy: 'コピー',
+      Paste: 'ペースト',
+    });
     this.#jspreadsheet = jspreadsheet(spreadsheetContainer, {
       columnDrag: false,
       rowDrag: false,
@@ -31,37 +40,45 @@ export class SheetContextMenuComponent implements AfterViewInit, OnDestroy {
         { title: '説明', width: 160 },
       ],
       data: this.users.map((user) => [user.name!, user.title!, user.mask!]),
-      contextMenu(instance, colIndex, rowIndex, event) {
-        const menuList = [];
-        menuList.push({
-          title: 'コピー',
-          shortcut: 'Ctrl + C',
-          // icon: 'copy',
-          onclick: () => {
-            console.log('copy', colIndex, rowIndex);
-            // FIXME: これだとシート全体がコピーされてしまう
-            // instance.copy();
-            // instance.copyData()
-          },
-        });
-        menuList.push({
-          title: 'ペースト',
-          shortcut: 'Ctrl + V',
-          // icon: 'paste',
-          onclick: async () => {
-            const text = await navigator.clipboard.readText();
-            console.log('paste', colIndex, rowIndex, text);
-            // FIXME: これだと一つのシートしかペーストできない
-            instance.paste(Number(colIndex), Number(rowIndex), text);
-          },
-        });
+      // contextMenu(instance, colIndex, rowIndex, event) {
+      //   const menuList = [];
+      //   menuList.push({
+      //     title: 'コピー',
+      //     shortcut: 'Ctrl + C',
+      //     // icon: 'copy',
+      //     onclick: () => {
+      //       console.log('copy', colIndex, rowIndex);
+      //       // FIXME: これだとシート全体がコピーされてしまう
+      //       // instance.copy();
+      //       // instance.copyData()
+      //     },
+      //   });
+      //   menuList.push({
+      //     title: 'ペースト',
+      //     shortcut: 'Ctrl + V',
+      //     // icon: 'paste',
+      //     onclick: async () => {
+      //       const text = await navigator.clipboard.readText();
+      //       console.log('paste', colIndex, rowIndex, text);
+      //       // FIXME: これだと一つのシートしかペーストできない
+      //       instance.paste(Number(colIndex), Number(rowIndex), text);
+      //     },
+      //   });
 
-        return menuList;
-      },
+      //   return menuList;
+      // },
       onload(element, instance) {
-        console.log('onload', element, instance);
+        console.log('onload', instance);
       },
     });
+    console.log('afterviewinit', this.#jspreadsheet.contextMenu);
+
+    this.spreadsheetContainer.nativeElement.addEventListener(
+      'contextmenu',
+      (event) => {
+        console.log('contextmenu', this.#jspreadsheet?.contextMenu);
+      }
+    );
   }
 
   ngOnDestroy(): void {
