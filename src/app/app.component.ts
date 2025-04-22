@@ -19,7 +19,7 @@ import { SortTableComponent } from '../components/sort-table/sort-table.componen
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'angular-sort-table';
+  title = 'naotaro-angular-sort-table';
 
   constructor() {}
 }
