@@ -39,6 +39,12 @@ export class SheetContextMenuComponent implements AfterViewInit, OnDestroy {
         { title: 'タイトル', width: 140 },
         { title: '説明', width: 160 },
       ],
+      // angularの場合は公式の方法では無視されるので、ここで上書きする
+      // 公式: https://bossanova.uk/jspreadsheet/docs/examples/translations
+      text: {
+        copy: 'コピー',
+        paste: 'ペースト',
+      },
       data: this.users.map((user) => [user.name!, user.title!, user.mask!]),
       // contextMenu(instance, colIndex, rowIndex, event) {
       //   const menuList = [];
