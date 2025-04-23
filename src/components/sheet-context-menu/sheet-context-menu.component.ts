@@ -8,11 +8,6 @@ import {
 import jspreadsheet from 'jspreadsheet-ce';
 import { User, users } from '../../data/sample-data';
 
-// jspreadsheet.setDictionary({
-//   Copy: 'コピー',
-//   Paste: 'ペースト',
-// });
-
 @Component({
   selector: 'sheet-context-menu',
   standalone: true,
@@ -27,10 +22,11 @@ export class SheetContextMenuComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     const spreadsheetContainer = this.spreadsheetContainer.nativeElement;
-    jspreadsheet.setDictionary({
-      Copy: 'コピー',
-      Paste: 'ペースト',
-    });
+    // これは効かない
+    // jspreadsheet.setDictionary({
+    //   Copy: 'コピー',
+    //   Paste: 'ペースト',
+    // });
     this.#jspreadsheet = jspreadsheet(spreadsheetContainer, {
       columnDrag: false,
       rowDrag: false,
@@ -77,7 +73,6 @@ export class SheetContextMenuComponent implements AfterViewInit, OnDestroy {
         console.log('onload', instance);
       },
     });
-    console.log('afterviewinit', this.#jspreadsheet.contextMenu);
 
     this.spreadsheetContainer.nativeElement.addEventListener(
       'contextmenu',
